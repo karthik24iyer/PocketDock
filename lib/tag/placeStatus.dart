@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pocket_dock/util/item_notification.dart';
 
 import '../util/data.dart';
 
@@ -37,6 +38,7 @@ class _PlaceStatusState extends State<PlaceStatus> {
             onPressed: () {
               mem.write(widget.tag, place);
               Navigator.pop(context);
+              mem.read(widget.tag+'_isNotificationEnabled')==true?ItemNotification().createItemNotification(widget.tag):{};
             },
             child: Text(
                 place.replaceAll("_", " "),

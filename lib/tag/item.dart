@@ -32,7 +32,7 @@ class _ItemState extends State<Item> {
   Widget getTagContainer(String item) {
 
     final mem = GetStorage();
-    String place="Empty";
+    String place="";
 
     if(mem.read(item)!=null) {
       place = mem.read(item);
@@ -42,10 +42,10 @@ class _ItemState extends State<Item> {
       decoration: const BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.black54,
-            blurRadius: 15.0,
+            color: Colors.black87,
+            blurRadius: 5.0,
             spreadRadius: 5.0,
-            offset: Offset(0.0, 7.0),
+            offset: Offset(0.0, 1.0),
           ),
         ],
       ),
@@ -121,7 +121,8 @@ class _ItemState extends State<Item> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Switch(
-                inactiveTrackColor: Colors.black,
+                inactiveThumbColor: Colors.black45,
+                inactiveTrackColor: Colors.white30,
                 activeColor: Colors.white,
                 //activeThumbImage: const AssetImage('images/toggle_icon.png'),
                 value: mem.read(item+"_toggle"),
@@ -187,8 +188,8 @@ class _ItemState extends State<Item> {
       mainAxisSpacing: 15,
       crossAxisCount: 2,
       children: <Widget>[
-        for(int i=0; i< AppData.tagList.length; i++)
-          getTagContainer(AppData.tagList[i]),
+        for(int i=0; i< AppData.itemList.length; i++)
+          getTagContainer(AppData.itemList[i]),
         ],
     );
   }

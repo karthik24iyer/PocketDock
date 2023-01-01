@@ -69,8 +69,8 @@ class _ItemStatusState extends State<ItemStatus> {
           spacing: 10,
           runAlignment: WrapAlignment.spaceEvenly,
           children: [
-            for(int i=0; i< AppData.tagList.length; i++)
-              getTagContainer(AppData.tagList[i]),
+            for(int i=0; i< AppData.itemList.length; i++)
+              getTagContainer(AppData.itemList[i]),
           ],
         )
       ],

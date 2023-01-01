@@ -1,5 +1,9 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pocket_dock/util/data.dart';
+import 'package:pocket_dock/util/item_notification.dart';
 
 class SetSchedule extends StatelessWidget {
   const SetSchedule({Key? key}) : super(key: key);
@@ -8,11 +12,12 @@ class SetSchedule extends StatelessWidget {
     final mem = GetStorage();
 
     int time = mem.read(item+'_scheduleTime') ?? 0;
-    int hr=time~/60;
+    int hr=time~/3600;
     switch(hr) {
       case 1: return "1H";
       case 2: return "2H";
       case 4: return "4H";
+      case 6: return "6H";
       case 12: return "12H";
       case 24: return "1D";
       case 24*2: return "2D";
@@ -24,6 +29,28 @@ class SetSchedule extends StatelessWidget {
   Widget getScheduleOption(BuildContext context, String item) {
     final mem = GetStorage();
     Color dialogTextColor = Colors.white54;
+    List<String> scheduleTimesText = List.filled(500,"",growable: true);
+    Map<String,int> scheduleTimes = HashMap();
+    for(int i=0;i<AppData.scheduleTimes.length;i++) {
+      if(AppData.scheduleTimes[i].contains("H")) {
+        if(AppData.scheduleTimes[i]=="1H") {
+          scheduleTimesText[i] = "1 hour";
+        }
+        else {
+          scheduleTimesText[i] = AppData.scheduleTimes[i].replaceAll("H", "") +" hour";
+        }
+        scheduleTimes.putIfAbsent(AppData.scheduleTimes[i], () => 60*60*int.parse(AppData.scheduleTimes[i].replaceAll("H", "")));
+      }
+      else if(AppData.scheduleTimes[i].contains("D")) {
+        if(AppData.scheduleTimes[i]=="1D") {
+          scheduleTimesText[i] = "1 day";
+        }
+        else {
+          scheduleTimesText[i] = AppData.scheduleTimes[i].replaceAll("D", "") +" day";
+        }
+        scheduleTimes.putIfAbsent(AppData.scheduleTimes[i], () => 60*60*24*int.parse(AppData.scheduleTimes[i].replaceAll("D", "")));
+      }
+    }
 
     return AlertDialog(
       backgroundColor: Colors.black45,
@@ -31,67 +58,25 @@ class SetSchedule extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       actionsAlignment: MainAxisAlignment.center,
-
-      // title: const Text(
-      //   'Set Timer',
-      //   style: TextStyle(fontSize: 24),
-      // ),
       content: SizedBox(
         width: 250,
-        height: 350,
+        height: 400,
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            textBaseline: TextBaseline.ideographic,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              TextButton(
-                child: Text('1 hour', style: TextStyle(color: dialogTextColor)),
-                onPressed: () {
-                  mem.write(item+'_scheduleTime',60);
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('2 hours', style: TextStyle(color: dialogTextColor)),
-                onPressed: () {
-                  mem.write(item+'_scheduleTime',120);
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('4 hours', style: TextStyle(color: dialogTextColor)),
-                onPressed: () {
-                  mem.write(item+'_scheduleTime',240);
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('12 hours', style: TextStyle(color: dialogTextColor)),
-                onPressed: () {
-                  mem.write(item+'_scheduleTime',720);
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('1 day', style: TextStyle(color: dialogTextColor)),
-                onPressed: () {
-                  mem.write(item+'_scheduleTime',1440);
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('2 days', style: TextStyle(color: dialogTextColor)),
-                onPressed: () {
-                  mem.write(item+'_scheduleTime',1440*2);
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('7 days', style: TextStyle(color: dialogTextColor)),
-                onPressed: () {
-                  mem.write(item+'_scheduleTime',1440*7);
-                  Navigator.of(context).pop();
-                },
-              ),
+              for(int i=0;i<AppData.scheduleTimes.length;i++)
+                TextButton(
+                  child: Text(scheduleTimesText[i], style: TextStyle(color: dialogTextColor)),
+                  onPressed: () {
+                    mem.write(item+'_scheduleTime',scheduleTimes[AppData.scheduleTimes[i]]);
+                    Navigator.of(context).pop();
+                    if(mem.read(item+"_toggle")==true) {
+                      ItemNotification().createItemNotification(item);
+                    }
+                  },
+                ),
             ],
           ),
         ),
@@ -103,13 +88,6 @@ class SetSchedule extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        // TextButton(
-        //   child: const Text('Set Timer'),
-        //   onPressed: () {
-        //     // Set the timer and close the dialog
-        //     Navigator.of(context).pop();
-        //   },
-        // ),
       ],
     );
   }

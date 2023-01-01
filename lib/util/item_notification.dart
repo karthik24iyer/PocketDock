@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pocket_dock/util/data.dart';
 
 class ItemNotification extends StatefulWidget {
   ItemNotification({Key? key}) : super(key: key);
@@ -16,15 +17,18 @@ class ItemNotification extends StatefulWidget {
     String currentTimeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
     mem.write(item+'_isNotificationEnabled', true);
 
-    //default notificationInterval 4 hrs
-    int notificationInterval = mem.read(item+'_scheduleTime') ?? 240;
-    notificationInterval = 1;
+    //default notificationInterval 6 hrs
+    int notificationInterval = mem.read(item+'_scheduleTime') ?? 360;
+    //notificationInterval = 1;
     AwesomeNotifications().createNotification(
       content: NotificationContent(
-          id: item.hashCode,
-          channelKey: 'key1',
-          title: item,
-          body: 'Last kept: '+mem.read(item),
+        id: AppData.itemUID[item] ?? 0,
+        channelKey: 'key1',
+        title: item,
+        body: 'Last kept: '+mem.read(item),
+        fullScreenIntent: true,
+        wakeUpScreen: true,
+        category: NotificationCategory.Reminder,
       ),
       // schedule: NotificationCalendar(
       //   minute: 0,
@@ -32,20 +36,19 @@ class ItemNotification extends StatefulWidget {
       //   timeZone: currentTimeZone,
       //   repeats: false,
       // ),
-      schedule: NotificationInterval(interval: 65, timeZone: currentTimeZone, repeats: true),
+      schedule: NotificationInterval(interval: notificationInterval, timeZone: currentTimeZone, repeats: false),
       actionButtons:
       [
-        NotificationActionButton(key: 'Okay', label: 'Okay'),
+        NotificationActionButton(key: 'Okay', label: 'Okay', actionType: ActionType.DismissAction),
         NotificationActionButton(key: 'Change', label: 'Change'),
       ]
     );
   }
 
   void cancelNotification(item) {
-    AwesomeNotifications().cancelSchedule(item.hashCode);
+    AwesomeNotifications().cancelSchedule(AppData.itemUID[item]??0);
     //AwesomeNotifications().cancelSchedule(1);
     mem.write(item+'_isNotificationEnabled', false);
-    //AwesomeNotifications().cancelSchedule(1);
   }
 
   int createUniqueId() {

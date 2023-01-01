@@ -33,20 +33,14 @@ class MyApp extends StatelessWidget {
 
   void writeToMem() {
     final mem = GetStorage();
+    //mem.write("pilot",true);
 
-    if(mem.read("pilot")!=true) {
-      mem.write("Power_Bank", "Bag");
-      mem.write("Kindle", "Desk");
-      mem.write("Charger", "Study_Table");
-      mem.write("Bottle", "Kitchen");
-      mem.write("Keys", "Study_Drawer");
-      mem.write("Earphone", "Next_to_TV");
-      mem.write("Watch", "Bed_Drawer");
-      mem.write("Mask", "Suitcase");
-      for(int i=0; i< AppData.tagList.length; i++) {
-        mem.write(AppData.tagList[i]+"_toggle",false);
+    if(mem.read("pilot")==true) {
+      for(int i=0; i< AppData.itemList.length; i++) {
+        mem.write(AppData.itemList[i],"Where?");
+        mem.write(AppData.itemList[i]+"_toggle",false);
       }
-      mem.write("pilot",true);
+      mem.write("pilot",false);
     }
   }
   // This widget is the root of your application.

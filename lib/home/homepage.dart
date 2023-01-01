@@ -25,6 +25,7 @@ class _HomePage extends State<HomePage> {
             AlertDialog(
               title: const Text('Allow Notifications'),
               content: const Text('Our app would like to send you notifications'),
+              backgroundColor: Colors.black,
               actions: [
                 TextButton(
                   onPressed: (){
@@ -33,7 +34,7 @@ class _HomePage extends State<HomePage> {
                   child: const Text(
                     'Don\'t allow',
                     style: TextStyle(
-                      color: Colors.black54,
+                      color: Colors.white54,
                       fontSize: 18,
                     ),
                   ),
@@ -46,7 +47,7 @@ class _HomePage extends State<HomePage> {
                   child: const Text(
                     'Allow',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -71,18 +72,18 @@ class _HomePage extends State<HomePage> {
         //backgroundColor: Colors.black87,
         appBar: AppBar(
           centerTitle: true,
-          toolbarHeight: 100,
-          backgroundColor: Colors.transparent,
+          toolbarHeight: 80,
+          backgroundColor: Colors.black,
           elevation: 0,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.black45, Colors.black],
-              ),
-            ),
-          ),
+          // flexibleSpace: Container(
+          //   decoration: const BoxDecoration(
+          //     gradient: LinearGradient(
+          //       begin: Alignment.topCenter,
+          //       end: Alignment.bottomCenter,
+          //       colors: [Colors.black, Colors.black],
+          //     ),
+          //   ),
+          // ),
           //backgroundColor: Colors.black,
           title: const TabBar(
             labelColor: Colors.white54,
@@ -98,7 +99,7 @@ class _HomePage extends State<HomePage> {
         ),
         body: Container(
           //color: Colors.black54,
-          color: Colors.black54.withOpacity(0.8),
+          color: Colors.black54.withOpacity(0.65),
           child: TabBarView(
             children: [
               const Item(),
