@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
     final mem = GetStorage();
     //mem.write("pilot",true);
 
-    if(mem.read("pilot")==true) {
+    if(mem.read("pilot")==null || mem.read("pilot")!=false) {
       for(int i=0; i< AppData.itemList.length; i++) {
         mem.write(AppData.itemList[i],"Where?");
         mem.write(AppData.itemList[i]+"_toggle",false);

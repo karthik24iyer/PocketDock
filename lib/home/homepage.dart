@@ -23,8 +23,8 @@ class _HomePage extends State<HomePage> {
           context: context,
           builder: (context) =>
             AlertDialog(
-              title: const Text('Allow Notifications'),
-              content: const Text('Our app would like to send you notifications'),
+              title: const Text('Allow Notifications', style: TextStyle(color: Colors.white70)),
+              content: const Text('Our app would like to send you notifications', style: TextStyle(color: Colors.white70)),
               backgroundColor: Colors.black,
               actions: [
                 TextButton(

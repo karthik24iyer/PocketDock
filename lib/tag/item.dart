@@ -23,12 +23,6 @@ class _ItemState extends State<Item> {
   TagIcon tagIcon = const TagIcon();
   bool displayFront = true;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _loadCounter();
-  // }
-
   Widget getTagContainer(String item) {
 
     final mem = GetStorage();
